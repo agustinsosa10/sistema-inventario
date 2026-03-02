@@ -1,7 +1,7 @@
 #imagen base
 FROM python:3.14-slim 
 
-#directorio dentro del contenedor
+#directorio dentro del contenedor /code
 WORKDIR /code
 
 #copia los requerimientos dentro del directorio del contenedor
