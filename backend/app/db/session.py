@@ -1,4 +1,4 @@
-# aca se crea la sesion de conexion a la base de datos
+# aca se crea la sesion de conexion a la base de datos, osea como debe ser esa conexion y a donde(engine)
 from sqlalchemy import create_engine
 from sqlachemy.orm import sessionmaker
 from sqlachemy.orm.session import engine

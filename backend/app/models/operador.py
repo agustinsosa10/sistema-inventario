@@ -1,7 +1,8 @@
 from app.db.base_class import Base
 from sqlalchemy import Column, BigInteger, String, DateTime, Enum
 import enum
-from datetime import datetime
+from datetime import datetime, timezone
+from sqlalchemy.orm import relationship
 
 
 class RolEnum(str, enum.Enum):
@@ -15,6 +16,8 @@ class Operador(Base):
     rol = Column(Enum(RolEnum), nullable=False)
     email = Column(String, unique=True, index=True)
     password = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    deleted_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    deleted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    movimientos = relationship("Movimientos", back_populates="operador")
