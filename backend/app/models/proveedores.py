@@ -1,6 +1,7 @@
 from sqlalchemy import Column, BigInteger, String, DateTime
-from datetime import datetime
+from datetime import datetime, timezone
 from app.db.base_class import Base
+from sqlalchemy.orm import relationship
 
 
 class Proveedores(Base):
@@ -9,6 +10,8 @@ class Proveedores(Base):
     telefono = Column(String, nullable=False)
     email = Column(String, unique=True, nullable=False)
     localidad = Column(String, nullable=False)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    deleted_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    deleted_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    suministros = relationship("Suministro", back_populates="proveedores")
