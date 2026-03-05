@@ -26,19 +26,21 @@ def create_category(db: Session, categoria: CategoriaCreate):
     return db_categoria_create
 
 
-def update_category(db: Session, categoria_id: int, categoria: CategoriaCreate):
-    db_categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
+def update_category(
+    db: Session, category_to_update: Categoria, new_data_categoria: CategoriaCreate
+):
 
-    db_categoria.nombre = categoria.nombre
+    category_to_update.nombre = new_data_categoria.nombre
+    category_to_update.updated_at = datetime.now(timezone.utc)
 
     db.commit()
-    db.refresh(db_categoria)
-    return db_categoria
+    db.refresh(category_to_update)
+    return category_to_update
 
 
-def delete_category(db: Session, categoria_id: int):
-    db_categoria = db.query(Categoria).filter(Categoria.id == categoria_id).first()
+def delete_category(db: Session, category_to_delete: Categoria):
 
-    db_categoria.deleted_at = datetime.now(timezone.utc)
+    category_to_delete.deleted_at = datetime.now(timezone.utc)
     db.commit()
-    return db_categoria
+    db.refresh(category_to_delete)
+    return category_to_delete

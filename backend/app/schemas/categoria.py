@@ -14,7 +14,7 @@ class Categoria(CategoriaBase):
     id: int
     created_at: datetime
     updated_at: Optional[datetime] = None
-    deleted: Optional[datetime] = None
+    deleted_at: Optional[datetime] = None
 
     # transforma el objeto a json
     class Config:

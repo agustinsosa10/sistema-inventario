@@ -21,7 +21,7 @@ class Productos(Base):
     precio = Column(Float, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     deleted_at = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    updated_at = Column(DateTime, nullable=True)
     categoria_id = Column(BigInteger, ForeignKey("categoria.id"), nullable=False)
 
     # relationship permite que las clases sepan que estan conectadas entre si

@@ -9,7 +9,7 @@ class Categoria(Base):
     nombre = Column(String, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     deleted_at = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    updated_at = Column(DateTime, nullable=True)
 
     # relationship permite que las clases sepan que estan conectadas entre si
     productos = relationship("Productos", back_populates="categorias")

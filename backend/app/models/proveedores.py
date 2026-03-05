@@ -12,6 +12,6 @@ class Proveedores(Base):
     localidad = Column(String, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
     deleted_at = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    updated_at = Column(DateTime, nullable=True)
 
     suministros = relationship("Suministro", back_populates="proveedores")

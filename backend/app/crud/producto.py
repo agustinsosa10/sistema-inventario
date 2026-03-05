@@ -35,23 +35,23 @@ def create_product(db: Session, producto: ProductoCreate):
     return db_product
 
 
-def update_product(db: Session, producto_id: int, producto: ProductoCreate):
-    db_product_updated = db.query(Productos).filter(Productos.id == producto_id).first()
+def update_product(db: Session, product_to_update: Productos, producto: ProductoCreate):
 
-    db_product_updated.nombre = producto.nombre
-    db_product_updated.stock = producto.stock
-    db_product_updated.stock_minimo = producto.stock_minimo
-    db_product_updated.precio = producto.precio
-    db_product_updated.categoria_id = producto.categoria_id
+    product_to_update.nombre = producto.nombre
+    product_to_update.stock = producto.stock
+    product_to_update.stock_minimo = producto.stock_minimo
+    product_to_update.precio = producto.precio
+    product_to_update.categoria_id = producto.categoria_id
+    product_to_update.updated_at = datetime.now(timezone.utc)
 
     db.commit()
-    db.refresh(db_product_updated)
-    return db_product_updated
+    db.refresh(product_to_update)
+    return product_to_update
 
 
-def delete_product(db: Session, producto_id: int):
-    db_product_deleted = db.query(Productos).filter(Productos.id == producto_id).first()
+def delete_product(db: Session, product_to_delete: Productos):
 
-    db_product_deleted.deleted_at = datetime.now(timezone.utc)
+    product_to_delete.deleted_at = datetime.now(timezone.utc)
     db.commit()
-    return db_product_deleted
+    db.refresh(product_to_delete)
+    return product_to_delete

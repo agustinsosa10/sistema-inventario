@@ -1,6 +1,7 @@
-from pydantic import BaseModel, Optional
+from pydantic import BaseModel
 from enum import Enum
 from datetime import datetime
+from typing import Optional
 
 
 class RolOperador(str, Enum):
@@ -19,12 +20,12 @@ class OperadorBase(BaseModel):
 # los datos que queremos que nos retorne la api + los de operadorbase
 class Operador(OperadorBase):
     id: int
-    created_at: datetime.utcnow
-    updated_at: Optional[datetime.utcnow] = None
-    deleted: Optional[datetime.utcnow] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    deleted: Optional[datetime] = None
 
     class Config:
-        from_atributtes: True
+        from_attributes: True
 
 
 # los datos que vamos a enviar a la api, en este caso los de operadorbase y la contraseña

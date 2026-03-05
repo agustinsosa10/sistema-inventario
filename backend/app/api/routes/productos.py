@@ -47,21 +47,21 @@ def update_product(
     producto: producto_schema.ProductoCreate,
     db: Session = Depends(get_db),
 ):
-    db_product_update = producto_crud.get_product_by_id(db, producto_id=producto_id)
+    product_to_update = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
-    if db_product_update is None:
+    if product_to_update is None:
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
         return producto_crud.update_product(
-            db, producto_id=producto_id, producto=producto
+            db, product_to_update=product_to_update, producto=producto
         )
 
 
 @router.delete("/{producto_id}", response_model=producto_schema.Producto)
 def delete_product(producto_id: int, db: Session = Depends(get_db)):
-    db_product_delete = producto_crud.get_product_by_id(db, producto_id=producto_id)
+    product_to_delete = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
-    if db_product_delete is None:
+    if product_to_delete is None:
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
-        return producto_crud.delete_product(db, producto_id=producto_id)
+        return producto_crud.delete_product(db, product_to_delete=product_to_delete)

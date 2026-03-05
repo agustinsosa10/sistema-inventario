@@ -18,6 +18,6 @@ class Operador(Base):
     password = Column(String)
     created_at = Column(DateTime, server_default=func.now())
     deleted_at = Column(DateTime, nullable=True)
-    updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now())
+    updated_at = Column(DateTime, nullable=True)
 
     movimientos = relationship("Movimientos", back_populates="operador")

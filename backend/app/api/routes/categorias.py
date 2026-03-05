@@ -47,7 +47,7 @@ def create_category(
 @router.put("/{categoria_id}", response_model=categoria_schema.Categoria)
 def update_category(
     categoria_id: int,
-    categoria: categoria_schema.CategoriaCreate,
+    new_data_categoria: categoria_schema.CategoriaCreate,
     db: Session = Depends(get_db),
 ):
     category_to_update = categoria_crud.get_category_by_id(
@@ -58,12 +58,15 @@ def update_category(
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
         return categoria_crud.update_category(
-            db, categoria_id=categoria_id, categoria=categoria
+            db,
+            category_to_update=category_to_update,
+            new_data_categoria=new_data_categoria,
         )
 
 
 @router.delete("/{categoria_id}", response_model=categoria_schema.Categoria)
 def delete_category(categoria_id: int, db: Session = Depends(get_db)):
+
     category_to_delete = categoria_crud.get_category_by_id(
         db, categoria_id=categoria_id
     )
@@ -71,4 +74,4 @@ def delete_category(categoria_id: int, db: Session = Depends(get_db)):
     if category_to_delete is None:
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
-        return categoria_crud.delete_category(db, categoria_id=categoria_id)
+        return categoria_crud.delete_category(db, category_to_delete=category_to_delete)

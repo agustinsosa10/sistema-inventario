@@ -14,3 +14,6 @@ app.include_router(productos.router, prefix="/products", tags=["Etiquetas (produ
 app.include_router(
     categorias.router, prefix="/categories", tags=["Etiquetas (categorias)"]
 )
+app.include_router(
+    operadores.router, prefix="/operadores", tags=["Etiquetas (operadores)"]
+)
