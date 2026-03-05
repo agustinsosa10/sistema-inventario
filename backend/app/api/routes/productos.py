@@ -33,7 +33,7 @@ def read_product_by_name(producto_nombre: str, db: Session = Depends(get_db)):
         return db_product
 
 
-@router.post("/create", response_model=producto_schema.Producto)
+@router.post("/", response_model=producto_schema.Producto)
 def create_product(
     producto: producto_schema.ProductoCreate, db: Session = Depends(get_db)
 ):
@@ -41,7 +41,7 @@ def create_product(
     return producto_crud.create_product(db, producto=producto)
 
 
-@router.put("/update/{producto_id}", response_model=producto_schema.Producto)
+@router.put("/{producto_id}", response_model=producto_schema.Producto)
 def update_product(
     producto_id: int,
     producto: producto_schema.ProductoCreate,
@@ -57,7 +57,7 @@ def update_product(
         )
 
 
-@router.delete("/delete/{producto_id}", response_model=producto_schema.Producto)
+@router.delete("/{producto_id}", response_model=producto_schema.Producto)
 def delete_product(producto_id: int, db: Session = Depends(get_db)):
     db_product_delete = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
