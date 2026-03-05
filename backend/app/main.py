@@ -1,10 +1,10 @@
+from app.db import base
 from fastapi import FastAPI
 from app.core.config import settings
-from app.db import base
+from app.api.routes import productos
+
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 
 
-@app.get("/")
-def saludo():
-    return {"message": "hola putos"}
+app.include_router(productos.router, prefix="/products", tags=["Etiquetas (productos)"])

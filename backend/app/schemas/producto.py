@@ -1,4 +1,5 @@
-from pydantic import BaseModel, Optional
+from pydantic import BaseModel
+from typing import Optional
 from datetime import datetime
 
 
@@ -15,13 +16,13 @@ class ProductoBase(BaseModel):
 # lo que queremos que nos retorne la api
 class Producto(ProductoBase):
     id: int
-    created_at: datetime.utcnow
-    updated_at: Optional[datetime.utcnow] = None
-    deleted: Optional[datetime.utcnow] = None
+    created_at: datetime
+    updated_at: Optional[datetime] = None
+    deleted: Optional[datetime] = None
 
     # que transforme el objeto en json
     class Config:
-        from_atributtes: True
+        from_attributes = True
 
 
 # lo que mandamos a la api

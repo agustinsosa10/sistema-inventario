@@ -14,7 +14,6 @@ class OperadorBase(BaseModel):
     nombre: str
     rol: RolOperador
     email: str
-    password: str
 
 
 # los datos que queremos que nos retorne la api + los de operadorbase
@@ -28,6 +27,6 @@ class Operador(OperadorBase):
         from_atributtes: True
 
 
-# los datos que vamos a enviar a la api, en este caso los de operadorbase
+# los datos que vamos a enviar a la api, en este caso los de operadorbase y la contraseña
 class OperadorCreate(OperadorBase):
-    pass
+    password: str
