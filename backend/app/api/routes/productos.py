@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas import producto as producto_schema
 from app.api.dependencies import get_db
@@ -17,7 +17,7 @@ def read_products(db: Session = Depends(get_db)):
 def read_product_by_id(producto_id: int, db: Session = Depends(get_db)):
     db_product = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
-    if db_product is None:
+    if not db_product or db_product.deleted_at is not None:
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
         return db_product
@@ -27,13 +27,15 @@ def read_product_by_id(producto_id: int, db: Session = Depends(get_db)):
 def read_product_by_name(producto_nombre: str, db: Session = Depends(get_db)):
     db_product = producto_crud.get_product_by_name(db, producto_nombre=producto_nombre)
 
-    if db_product is None:
+    if not db_product:
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
         return db_product
 
 
-@router.post("/", response_model=producto_schema.Producto)
+@router.post(
+    "/", status_code=status.HTTP_201_CREATED, response_model=producto_schema.Producto
+)
 def create_product(
     producto: producto_schema.ProductoCreate, db: Session = Depends(get_db)
 ):
@@ -49,7 +51,7 @@ def update_product(
 ):
     product_to_update = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
-    if product_to_update is None:
+    if not product_to_update or product_to_update.deleted_at is not None:
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
         return producto_crud.update_product(
@@ -57,11 +59,11 @@ def update_product(
         )
 
 
-@router.delete("/{producto_id}", response_model=producto_schema.Producto)
+@router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_product(producto_id: int, db: Session = Depends(get_db)):
     product_to_delete = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
-    if product_to_delete is None:
+    if not product_to_delete or product_to_delete.deleted_at is not None:
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
         return producto_crud.delete_product(db, product_to_delete=product_to_delete)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas import categoria as categoria_schema
 from app.api.dependencies import get_db
@@ -19,7 +19,7 @@ def read_category_by_id(categoria_id: int, db: Session = Depends(get_db)):
         db, categoria_id=categoria_id
     )
 
-    if db_categoria_by_id is None:
+    if not db_categoria_by_id or db_categoria_by_id is not None:
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
         return db_categoria_by_id
@@ -31,13 +31,15 @@ def read_category_by_name(categoria_name: str, db: Session = Depends(get_db)):
         db, categoria_name=categoria_name
     )
 
-    if db_categorie_by_name is None:
+    if not db_categorie_by_name:
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
         return db_categorie_by_name
 
 
-@router.post("/", response_model=categoria_schema.Categoria)
+@router.post(
+    "/", status_code=status.HTTP_201_CREATED, response_model=categoria_schema.Categoria
+)
 def create_category(
     categoria: categoria_schema.CategoriaCreate, db: Session = Depends(get_db)
 ):
@@ -54,7 +56,7 @@ def update_category(
         db, categoria_id=categoria_id
     )
 
-    if category_to_update is None:
+    if not category_to_update or category_to_update.deleted_at is not None:
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
         return categoria_crud.update_category(
@@ -64,14 +66,14 @@ def update_category(
         )
 
 
-@router.delete("/{categoria_id}", response_model=categoria_schema.Categoria)
+@router.delete("/{categoria_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_category(categoria_id: int, db: Session = Depends(get_db)):
 
     category_to_delete = categoria_crud.get_category_by_id(
         db, categoria_id=categoria_id
     )
 
-    if category_to_delete is None:
+    if not category_to_delete or category_to_delete.deleted_at is not None:
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
         return categoria_crud.delete_category(db, category_to_delete=category_to_delete)

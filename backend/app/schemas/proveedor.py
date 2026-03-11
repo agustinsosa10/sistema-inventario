@@ -1,5 +1,6 @@
-from pydantic import BaseModel, Optional
+from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 
 # que herede basemodel le indica a python que tiene validacion de datos
@@ -15,13 +16,13 @@ class ProveedorBase(BaseModel):
 class Proveedor(ProveedorBase):
     id: int
     created_at: datetime
-    updated_at: Optional[datetime.utcnow] = None
-    deleted: Optional[datetime.utcnow] = None
+    updated_at: Optional[datetime] = None
+    deleted_at: Optional[datetime] = None
 
     class Config:
         from_atributtes: True
 
 
-# los datos que mandamos en este caso heredamos los datos de proveedorbase
+# los datos que mandamos, en este caso heredamos los datos de proveedorbase
 class ProveedorCreate(ProveedorBase):
     pass

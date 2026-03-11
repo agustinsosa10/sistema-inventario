@@ -13,7 +13,13 @@ def get_operador_by_id(db: Session, operador_id: int):
 
 
 def get_operador_by_name(db: Session, operador_name: str):
-    return db.query(Operador).filter(Operador.name.ilike(f"%{operador_name}%")).all()
+    return (
+        db.query(Operador)
+        .filter(
+            Operador.nombre.ilike(f"%{operador_name}%"), Operador.deleted_at == None
+        )
+        .all()
+    )
 
 
 def create_operador(db: Session, operador: OperadorCreate):

@@ -16,7 +16,11 @@ def get_product_by_id(db: Session, producto_id: int):
 
 def get_product_by_name(db: Session, producto_nombre: str):
     return (
-        db.query(Productos).filter(Productos.nombre.ilike(f"%{producto_nombre}%")).all()
+        db.query(Productos)
+        .filter(
+            Productos.nombre.ilike(f"%{producto_nombre}%"), Productos.deleted_at == None
+        )
+        .all()
     )
 
 

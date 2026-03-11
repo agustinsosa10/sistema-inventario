@@ -14,7 +14,11 @@ def get_category_by_id(db: Session, categoria_id: int):
 
 def get_categoria_by_name(db: Session, categoria_name: str):
     return (
-        db.query(Categoria).filter(Categoria.nombre.ilike(f"%{categoria_name}%")).all()
+        db.query(Categoria)
+        .filter(
+            Categoria.nombre.ilike(f"%{categoria_name}%"), Categoria.deleted_at == None
+        )
+        .all()
     )
 
 
