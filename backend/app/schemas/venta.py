@@ -1,5 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import List
+from app.schemas.venta_detalle import VentaDetalleCreate, VentaDetalle
 
 
 class VentaBase(BaseModel):
@@ -8,9 +10,10 @@ class VentaBase(BaseModel):
 
 # datos que nos retorna
 class Venta(VentaBase):
-    pass
     id: int
+    total: float
     created_at: datetime
+    detalles: List[VentaDetalle]
 
     class Config:
         from_attributes = True
@@ -18,4 +21,4 @@ class Venta(VentaBase):
 
 # datos que enviamos
 class VentaCreate(VentaBase):
-    pass
+    detalles: List[VentaDetalleCreate]

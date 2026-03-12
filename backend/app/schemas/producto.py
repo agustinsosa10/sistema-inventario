@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
+from app.schemas.suministro import SuministroCreate
 
 
 # que herede basemodel le indica a python que tiene validacion de datos
@@ -27,4 +28,5 @@ class Producto(ProductoBase):
 
 # lo que mandamos a la api
 class ProductoCreate(ProductoBase):
-    pass
+    proveedor_id: int
+    precio_suministro: float

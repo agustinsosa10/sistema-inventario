@@ -3,16 +3,15 @@ from datetime import datetime
 
 
 class VentaDetalleBase(BaseModel):
-    venta_id: int
     producto_id: int
     cantidad: int
     precio_unitario: float
 
 
 # los datos que recibimos
-class Venta(VentaDetalleBase):
+class VentaDetalle(VentaDetalleBase):
     id: int
-    pass
+    venta_id: int
 
     class Config:
         from_attributes = True
