@@ -1,6 +1,5 @@
 from app.db.base_class import Base
 from sqlalchemy import Column, BigInteger, String, DateTime, func
-from datetime import datetime, timezone
 from sqlalchemy.orm import relationship
 
 

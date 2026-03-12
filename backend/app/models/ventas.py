@@ -1,0 +1,13 @@
+from app.db.base_class import Base
+from sqlalchemy import Column, BigInteger, String, ForeignKey, DateTime, func, Integer
+from sqlalchemy.orm import relationship
+
+
+class Ventas(Base):
+    id = Column(BigInteger, primary_key=True, index=True)
+    operador_id = Column(BigInteger, ForeignKey("operador.id"), nullable=False)
+    total = Column(Integer, nullable=False, default=0)
+    created_at = Column(DateTime, server_default=func.now())
+
+    operador = relationship("Operador", back_populates="ventas")
+    ventas_detalle = relationship("VentasDetalle", back_populates="ventas")
