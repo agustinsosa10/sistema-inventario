@@ -25,7 +25,7 @@ class Movimiento(MovimientoBase):
 
     # convertir objeto en json
     class Config:
-        from_atributtes: True
+        from_attributes = True
 
 
 # los datos que enviamos a la api, en este caso los de movimientobase
