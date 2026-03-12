@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from app.models.productos import Productos
 from app.schemas.producto import ProductoCreate
 from datetime import datetime, timezone
+from app.models.suministro import Suministro
 
 
 # obtener todos los productos
@@ -34,6 +35,15 @@ def create_product(db: Session, producto: ProductoCreate):
     )
 
     db.add(db_product)
+    db.flush()
+
+    db_suministro = Suministro(
+        producto_id=db_product.id,
+        proveedor_id=producto.proveedor_id,
+        precio_unitario=producto.precio_suministro,
+    )
+
+    db.add(db_suministro)
     db.commit()
     db.refresh(db_product)
     return db_product

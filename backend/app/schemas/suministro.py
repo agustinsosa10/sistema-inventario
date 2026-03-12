@@ -13,7 +13,6 @@ class SuministroBase(BaseModel):
 
 # aca definimos que queremos que nos retorne la api
 class Suministro(SuministroBase):
-    pass
     created_at: datetime
     deleted_at: Optional[datetime] = None
 
