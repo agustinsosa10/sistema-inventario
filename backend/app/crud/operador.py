@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 
 def get_operadores(db: Session):
-    return db.query(Operador).all()
+    return db.query(Operador).filter(Operador.deleted_at == None).all()
 
 
 def get_operador_by_id(db: Session, operador_id: int):

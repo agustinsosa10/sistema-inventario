@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 
 def get_proveedores(db: Session):
-    return db.query(Proveedores).all()
+    return db.query(Proveedores).filter(Proveedores.deleted_at == None).all()
 
 
 def get_proveedor_by_id(db: Session, proveedor_id: int):

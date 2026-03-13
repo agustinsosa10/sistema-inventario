@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.models.productos import Productos
 from app.schemas.producto import ProductoCreate
 from datetime import datetime, timezone
@@ -7,7 +7,12 @@ from app.models.suministro import Suministro
 
 # obtener todos los productos
 def get_products(db: Session):
-    return db.query(Productos).all()
+    return (
+        db.query(Productos)
+        .filter(Productos.deleted_at == None)
+        .options(joinedload(Productos.categorias))
+        .all()
+    )
 
 
 # obtener producto por id
@@ -21,6 +26,14 @@ def get_product_by_name(db: Session, producto_nombre: str):
         .filter(
             Productos.nombre.ilike(f"%{producto_nombre}%"), Productos.deleted_at == None
         )
+        .all()
+    )
+
+
+def get_products_by_categorie(db: Session, categorie_id: int):
+    return (
+        db.query(Productos)
+        .filter(Productos.categoria_id == categorie_id, Productos.deleted_at == None)
         .all()
     )
 

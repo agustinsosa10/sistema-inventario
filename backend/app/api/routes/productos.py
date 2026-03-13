@@ -33,6 +33,16 @@ def read_product_by_name(producto_nombre: str, db: Session = Depends(get_db)):
         return db_product
 
 
+@router.get("/categoria/{categoria_id}", response_model=List[producto_schema.Producto])
+def get_product_by_categorie(categoria_id: int, db: Session = Depends(get_db)):
+    db_product = producto_crud.get_products_by_categorie(db, categorie_id=categoria_id)
+
+    if not db_product:
+        raise HTTPException(status_code=404, detail="Products not founds")
+    else:
+        return db_product
+
+
 @router.post(
     "/", status_code=status.HTTP_201_CREATED, response_model=producto_schema.Producto
 )

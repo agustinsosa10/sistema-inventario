@@ -5,7 +5,7 @@ from datetime import datetime, timezone
 
 
 def get_categories(db: Session):
-    return db.query(Categoria).all()
+    return db.query(Categoria).filter(Categoria.deleted_at == None).all()
 
 
 def get_category_by_id(db: Session, categoria_id: int):

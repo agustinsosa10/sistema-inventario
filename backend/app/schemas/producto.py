@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from app.schemas.suministro import SuministroCreate
+from app.schemas import categoria
 
 
 # que herede basemodel le indica a python que tiene validacion de datos
@@ -11,12 +12,12 @@ class ProductoBase(BaseModel):
     stock: int
     stock_minimo: int
     precio: float
-    categoria_id: int
 
 
 # lo que queremos que nos retorne la api
 class Producto(ProductoBase):
     id: int
+    categorias: categoria.Categoria
     created_at: datetime
     updated_at: Optional[datetime] = None
     deleted_at: Optional[datetime] = None

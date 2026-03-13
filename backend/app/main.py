@@ -5,6 +5,7 @@ from app.api.routes import productos
 from app.api.routes import categorias
 from app.api.routes import proveedores
 from app.api.routes import operadores
+from app.api.routes import movimientos
 
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
@@ -19,4 +20,7 @@ app.include_router(
 )
 app.include_router(
     proveedores.router, prefix="/proveedores", tags=["Etiquetas (proveedores)"]
+)
+app.include_router(
+    movimientos.router, prefix="/movimientos", tags=["Etiquetas (movimientos)"]
 )

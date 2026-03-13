@@ -1,6 +1,7 @@
 from pydantic import BaseModel
 from datetime import datetime
 from enum import Enum
+from app.schemas import producto, operador
 
 
 class MovimientoTipo(str, Enum):
@@ -14,14 +15,14 @@ class MovimientoTipo(str, Enum):
 class MovimientoBase(BaseModel):
     cantidad: int
     tipo: MovimientoTipo
-    producto_id: int
-    operador_id: int
 
 
 # los datos que queremos que nos devuelva la api, ademas de los de movimientobase
 class Movimiento(MovimientoBase):
     id: int
-    fecha: datetime.utcnow
+    fecha: datetime
+    productos: producto.Producto
+    operador: operador.Operador
 
     # convertir objeto en json
     class Config:
