@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.operador import Operador
-from app.schemas.operador import OperadorCreate
+from app.schemas.operador import OperadorCreate, OperadorUpdate
 from datetime import datetime, timezone
 
 
@@ -37,13 +37,17 @@ def create_operador(db: Session, operador: OperadorCreate):
 
 
 def update_operador(
-    db: Session, operador_to_update: Operador, operador: OperadorCreate
+    db: Session, operador_to_update: Operador, operador: OperadorUpdate
 ):
+    if operador.nombre is not None:
+        operador_to_update.nombre = operador.nombre
+    if operador.rol is not None:
+        operador_to_update.rol = operador.rol
+    if operador.email is not None:
+        operador_to_update.email = operador.email
+    if operador.password is not None:
+        operador_to_update.password = operador.password
 
-    operador_to_update.nombre = operador.nombre
-    operador_to_update.rol = operador.rol
-    operador_to_update.email = operador.email
-    operador_to_update.password = operador.password
     operador_to_update.updated_at = datetime.now(timezone.utc)
 
     db.commit()

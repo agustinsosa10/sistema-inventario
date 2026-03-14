@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.models.proveedores import Proveedores
-from app.schemas.proveedor import ProveedorCreate
+from app.schemas.proveedor import ProveedorCreate, ProveedorUpdate
 from datetime import datetime, timezone
 
 
@@ -41,10 +41,15 @@ def create_proveedor(db: Session, new_proveedor: ProveedorCreate):
 def update_proveedor(
     db: Session, proveedor_to_update: Proveedores, updated_proveedor: ProveedorCreate
 ):
-    proveedor_to_update.nombre = updated_proveedor.nombre
-    proveedor_to_update.telefono = updated_proveedor.telefono
-    proveedor_to_update.email = updated_proveedor.email
-    proveedor_to_update.localidad = updated_proveedor.localidad
+    if updated_proveedor.nombre is not None:
+        proveedor_to_update.nombre = updated_proveedor.nombre
+    if updated_proveedor.telefono is not None:
+        proveedor_to_update.telefono = updated_proveedor.telefono
+    if updated_proveedor.email is not None:
+        proveedor_to_update.email = updated_proveedor.email
+    if updated_proveedor.localidad is not None:
+        proveedor_to_update.localidad = updated_proveedor.localidad
+
     proveedor_to_update.updated_at = datetime.now(timezone.utc)
 
     db.commit()

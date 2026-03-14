@@ -47,7 +47,7 @@ def create_operador(
 @router.put("/{operador_id}", response_model=operador_schema.Operador)
 def update_operador(
     operador_id: int,
-    operador: operador_schema.OperadorCreate,
+    operador: operador_schema.OperadorUpdate,
     db: Session = Depends(get_db),
 ):
     operador_to_update = operador_crud.get_operador_by_id(db, operador_id=operador_id)

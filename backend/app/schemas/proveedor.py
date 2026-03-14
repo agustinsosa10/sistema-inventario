@@ -26,3 +26,10 @@ class Proveedor(ProveedorBase):
 # los datos que mandamos, en este caso heredamos los datos de proveedorbase
 class ProveedorCreate(ProveedorBase):
     pass
+
+
+class ProveedorUpdate(BaseModel):
+    nombre: str = None
+    telefono: str = None
+    email: str = None
+    localidad: str = None

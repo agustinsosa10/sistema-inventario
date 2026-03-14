@@ -45,7 +45,7 @@ def create_proveedor(
 @router.put("/{proveedor_id}", response_model=proveedor_schema.Proveedor)
 def update_proveedor(
     proveedor_id: int,
-    updated_proveedor: proveedor_schema.ProveedorCreate,
+    updated_proveedor: proveedor_schema.ProveedorUpdate,
     db: Session = Depends(get_db),
 ):
     proveedor_to_update = proveedor_crud.get_proveedor_by_id(

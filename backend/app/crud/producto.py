@@ -1,8 +1,12 @@
 from sqlalchemy.orm import Session, joinedload
 from app.models.productos import Productos
-from app.schemas.producto import ProductoCreate
+from app.schemas.producto import ProductoCreate, ProductoUpdate
+from app.schemas.movimiento import MovimientoCreate
+from app.models.movimientos import TipoEnum
 from datetime import datetime, timezone
 from app.models.suministro import Suministro
+from app.crud import movimiento as movimiento_crud
+from typing import Optional
 
 
 # obtener todos los productos
@@ -10,7 +14,7 @@ def get_products(db: Session):
     return (
         db.query(Productos)
         .filter(Productos.deleted_at == None)
-        .options(joinedload(Productos.categorias))
+        .options(joinedload(Productos.categoria))
         .all()
     )
 
@@ -62,13 +66,32 @@ def create_product(db: Session, producto: ProductoCreate):
     return db_product
 
 
-def update_product(db: Session, product_to_update: Productos, producto: ProductoCreate):
+def update_product(
+    db: Session,
+    product_to_update: Productos,
+    producto: ProductoUpdate,
+):
 
-    product_to_update.nombre = producto.nombre
-    product_to_update.stock = producto.stock
-    product_to_update.stock_minimo = producto.stock_minimo
-    product_to_update.precio = producto.precio
-    product_to_update.categoria_id = producto.categoria_id
+    if producto.nombre is not None:
+        product_to_update.nombre = producto.nombre
+    if producto.stock_minimo is not None:
+        product_to_update.stock_minimo = producto.stock_minimo
+    if producto.precio is not None:
+        product_to_update.precio = producto.precio
+    if producto.categoria_id is not None:
+        product_to_update.categoria_id = producto.categoria_id
+
+    if producto.cantidad is not None:
+        product_to_update.stock += producto.cantidad
+
+        movimiento_crud.create_movimiento(
+            db,
+            cantidad=producto.cantidad,
+            tipo=TipoEnum.restock,
+            producto_id=product_to_update.id,
+            operador_id=1,
+        )
+
     product_to_update.updated_at = datetime.now(timezone.utc)
 
     db.commit()

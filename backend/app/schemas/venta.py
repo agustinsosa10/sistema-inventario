@@ -2,6 +2,7 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import List
 from app.schemas.venta_detalle import VentaDetalleCreate, VentaDetalle
+from app.schemas import operador
 
 
 class VentaBase(BaseModel):
@@ -9,11 +10,12 @@ class VentaBase(BaseModel):
 
 
 # datos que nos retorna
-class Venta(VentaBase):
+class Venta(BaseModel):
     id: int
     total: float
     created_at: datetime
-    detalles: List[VentaDetalle]
+    detalles: List[VentaDetalle] = []
+    operador: operador.Operador
 
     class Config:
         from_attributes = True

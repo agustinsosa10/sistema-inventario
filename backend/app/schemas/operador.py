@@ -15,9 +15,10 @@ class OperadorBase(BaseModel):
     nombre: str
     rol: RolOperador
     email: str
+    # no colocamos la pass aca por que no queremos devolverla en una respuesta de la api
 
 
-# los datos que queremos que nos retorne la api + los de operadorbase
+# los datos que queremos que nos retorne la api + los de operadorbase, no devolvemos la contrasñea por que no esta en el modelo base
 class Operador(OperadorBase):
     id: int
     created_at: datetime
@@ -31,3 +32,10 @@ class Operador(OperadorBase):
 # los datos que vamos a enviar a la api, en este caso los de operadorbase y la contraseña
 class OperadorCreate(OperadorBase):
     password: str
+
+
+class OperadorUpdate(BaseModel):
+    nombre: str = None
+    rol: RolOperador = None
+    email: str = None
+    password: str = None

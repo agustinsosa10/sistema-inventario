@@ -9,5 +9,5 @@ class Ventas(Base):
     total = Column(Float, nullable=False, default=0)
     created_at = Column(DateTime, server_default=func.now())
 
-    operador = relationship("Operador", back_populates="ventas")
-    ventas_detalle = relationship("VentasDetalle", back_populates="ventas")
+    operador = relationship("Operador", back_populates="venta")
+    ventas_detalle = relationship("VentasDetalle", back_populates="venta")

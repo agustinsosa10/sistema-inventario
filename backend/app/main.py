@@ -6,14 +6,17 @@ from app.api.routes import categorias
 from app.api.routes import proveedores
 from app.api.routes import operadores
 from app.api.routes import movimientos
+from app.api.routes import ventas
 
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 
 
-app.include_router(productos.router, prefix="/products", tags=["Etiquetas (productos)"])
 app.include_router(
-    categorias.router, prefix="/categories", tags=["Etiquetas (categorias)"]
+    productos.router, prefix="/productos", tags=["Etiquetas (productos)"]
+)
+app.include_router(
+    categorias.router, prefix="/categorias", tags=["Etiquetas (categorias)"]
 )
 app.include_router(
     operadores.router, prefix="/operadores", tags=["Etiquetas (operadores)"]
@@ -24,3 +27,4 @@ app.include_router(
 app.include_router(
     movimientos.router, prefix="/movimientos", tags=["Etiquetas (movimientos)"]
 )
+app.include_router(ventas.router, prefix="/ventas", tags=["Etiquetas (ventas)"])

@@ -2,8 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas import producto as producto_schema
 from app.api.dependencies import get_db
-from typing import List
+from typing import List, Optional
 from app.crud import producto as producto_crud
+from app.schemas.movimiento import MovimientoCreate
 
 router = APIRouter()
 
@@ -56,7 +57,7 @@ def create_product(
 @router.put("/{producto_id}", response_model=producto_schema.Producto)
 def update_product(
     producto_id: int,
-    producto: producto_schema.ProductoCreate,
+    producto: producto_schema.ProductoUpdate,
     db: Session = Depends(get_db),
 ):
     product_to_update = producto_crud.get_product_by_id(db, producto_id=producto_id)

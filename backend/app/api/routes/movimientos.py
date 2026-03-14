@@ -35,7 +35,9 @@ def get_movimiento_by_type(movimiento_tipo: str, db: Session = Depends(get_db)):
     )
 
     if not db_movimientos:
-        raise HTTPException(status_code=404, detail="Movimientos not founds")
+        raise HTTPException(
+            status_code=404, detail="Movimientos of these type not founds"
+        )
     else:
         return db_movimientos
 

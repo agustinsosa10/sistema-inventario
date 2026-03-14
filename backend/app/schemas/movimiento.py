@@ -21,7 +21,7 @@ class MovimientoBase(BaseModel):
 class Movimiento(MovimientoBase):
     id: int
     fecha: datetime
-    productos: producto.Producto
+    producto: producto.Producto
     operador: operador.Operador
 
     # convertir objeto en json
@@ -32,3 +32,5 @@ class Movimiento(MovimientoBase):
 # los datos que enviamos a la api, en este caso los de movimientobase
 class MovimientoCreate(MovimientoBase):
     pass
+    producto_id: int
+    operador_id: int

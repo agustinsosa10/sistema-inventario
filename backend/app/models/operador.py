@@ -21,4 +21,4 @@ class Operador(Base):
     updated_at = Column(DateTime, nullable=True)
 
     movimientos = relationship("Movimientos", back_populates="operador")
-    ventas = relationship("Ventas", back_populates="operador")
+    venta = relationship("Ventas", back_populates="operador")

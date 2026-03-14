@@ -29,5 +29,5 @@ class Movimientos(Base):
     operador_id = Column(BigInteger, ForeignKey("operador.id"), nullable=False)
 
     # relationship permite que las clases sepan que estan conectadas entre si
-    productos = relationship("Productos", back_populates="movimientos")
+    producto = relationship("Productos", back_populates="movimientos")
     operador = relationship("Operador", back_populates="movimientos")

@@ -11,4 +11,4 @@ class Categoria(Base):
     updated_at = Column(DateTime, nullable=True)
 
     # relationship permite que las clases sepan que estan conectadas entre si
-    productos = relationship("Productos", back_populates="categorias")
+    productos = relationship("Productos", back_populates="categoria")
