@@ -37,8 +37,12 @@ def get_movimiento_by_producto(db: Session, producto_name: str):
 def create_movimiento(
     db: Session, cantidad: int, tipo: MovimientoTipo, producto_id: int, operador_id: int
 ):
+
     new_movimiento = Movimientos(
-        cantidad=cantidad, tipo=tipo, operador_id=operador_id, producto_id=producto_id
+        cantidad=cantidad,
+        tipo=tipo,
+        operador_id=operador_id,
+        producto_id=producto_id,
     )
 
     db.add(new_movimiento)

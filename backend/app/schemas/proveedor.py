@@ -15,9 +15,9 @@ class ProveedorBase(BaseModel):
 # los datos que queremos que se nos retorne, incluimos el id y las fechas
 class Proveedor(ProveedorBase):
     id: int
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-    deleted_at: Optional[datetime] = None
+    # created_at: datetime
+    # updated_at: Optional[datetime] = None
+    # deleted_at: Optional[datetime] = None
 
     class Config:
         from_atributtes: True

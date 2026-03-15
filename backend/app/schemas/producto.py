@@ -18,11 +18,21 @@ class ProductoBase(BaseModel):
 class Producto(ProductoBase):
     id: int
     categoria: categoria.Categoria
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-    deleted_at: Optional[datetime] = None
+    # comente las fechas por que no son tan relevantes para mostrarla al usuario
+    # created_at: datetime
+    # updated_at: Optional[datetime] = None
+    # deleted_at: Optional[datetime] = None
 
     # que transforme el objeto en json
+    class Config:
+        from_attributes = True
+
+
+class ProductoVenta(BaseModel):
+    id: int
+    nombre: str
+    categoria: categoria.Categoria
+
     class Config:
         from_attributes = True
 

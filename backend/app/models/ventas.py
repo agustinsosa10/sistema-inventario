@@ -10,4 +10,5 @@ class Ventas(Base):
     created_at = Column(DateTime, server_default=func.now())
 
     operador = relationship("Operador", back_populates="venta")
-    ventas_detalle = relationship("VentasDetalle", back_populates="venta")
+    detalles = relationship("VentasDetalle", back_populates="venta")
+    movimientos = relationship("Movimientos", back_populates="venta")

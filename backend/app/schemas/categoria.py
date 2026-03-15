@@ -12,9 +12,9 @@ class CategoriaBase(BaseModel):
 # datos que nos retorna la api + los de categoriabase
 class Categoria(CategoriaBase):
     id: int
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-    deleted_at: Optional[datetime] = None
+    # created_at: datetime
+    # updated_at: Optional[datetime] = None
+    # deleted_at: Optional[datetime] = None
 
     # transforma el objeto a json
     class Config:

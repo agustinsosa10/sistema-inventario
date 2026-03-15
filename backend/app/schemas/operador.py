@@ -13,17 +13,16 @@ class RolOperador(str, Enum):
 # definimos los tipos de los atributos que contiene la clase
 class OperadorBase(BaseModel):
     nombre: str
-    rol: RolOperador
-    email: str
+
     # no colocamos la pass aca por que no queremos devolverla en una respuesta de la api
 
 
 # los datos que queremos que nos retorne la api + los de operadorbase, no devolvemos la contrasñea por que no esta en el modelo base
 class Operador(OperadorBase):
     id: int
-    created_at: datetime
-    updated_at: Optional[datetime] = None
-    deleted_at: Optional[datetime] = None
+    # created_at: datetime
+    # updated_at: Optional[datetime] = None
+    # deleted_at: Optional[datetime] = None
 
     class Config:
         from_attributes: True
@@ -32,6 +31,8 @@ class Operador(OperadorBase):
 # los datos que vamos a enviar a la api, en este caso los de operadorbase y la contraseña
 class OperadorCreate(OperadorBase):
     password: str
+    rol: RolOperador
+    email: str
 
 
 class OperadorUpdate(BaseModel):

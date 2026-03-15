@@ -10,5 +10,5 @@ class VentasDetalle(Base):
     cantidad = Column(Integer, nullable=False, default=0)
     precio_unitario = Column(Float, nullable=False, default=0)
 
-    venta = relationship("Ventas", back_populates="ventas_detalle")
+    venta = relationship("Ventas", back_populates="detalles")
     productos = relationship("Productos", back_populates="ventas_detalle")

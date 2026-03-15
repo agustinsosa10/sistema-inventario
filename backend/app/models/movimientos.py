@@ -27,7 +27,9 @@ class Movimientos(Base):
     tipo = Column(Enum(TipoEnum), nullable=False)
     producto_id = Column(BigInteger, ForeignKey("productos.id"), nullable=False)
     operador_id = Column(BigInteger, ForeignKey("operador.id"), nullable=False)
+    venta_id = Column(BigInteger, ForeignKey("ventas.id"), nullable=True)
 
     # relationship permite que las clases sepan que estan conectadas entre si
     producto = relationship("Productos", back_populates="movimientos")
     operador = relationship("Operador", back_populates="movimientos")
+    venta = relationship("Ventas", back_populates="movimientos")
