@@ -7,6 +7,7 @@ from app.api.routes import proveedores
 from app.api.routes import operadores
 from app.api.routes import movimientos
 from app.api.routes import ventas
+from app.api.routes import auth
 
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
@@ -28,3 +29,4 @@ app.include_router(
     movimientos.router, prefix="/movimientos", tags=["Etiquetas (movimientos)"]
 )
 app.include_router(ventas.router, prefix="/ventas", tags=["Etiquetas (ventas)"])
+app.include_router(auth.router, prefix="/auth", tags=["Etiquetas (login)"])

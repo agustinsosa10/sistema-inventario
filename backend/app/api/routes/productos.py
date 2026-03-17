@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas import producto as producto_schema
-from app.api.dependencies import get_db
+from app.api.dependencies import get_db, verificar_token
 from typing import List, Optional
 from app.crud import producto as producto_crud
 from app.schemas.movimiento import MovimientoCreate
@@ -10,12 +10,16 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[producto_schema.Producto])
-def read_products(db: Session = Depends(get_db)):
+def read_products(db: Session = Depends(get_db), current_user=Depends(verificar_token)):
     return producto_crud.get_products(db)
 
 
 @router.get("/{producto_id}", response_model=producto_schema.Producto)
-def read_product_by_id(producto_id: int, db: Session = Depends(get_db)):
+def read_product_by_id(
+    producto_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
     db_product = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
     if not db_product or db_product.deleted_at is not None:
@@ -25,7 +29,11 @@ def read_product_by_id(producto_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/name/{producto_nombre}", response_model=List[producto_schema.Producto])
-def read_product_by_name(producto_nombre: str, db: Session = Depends(get_db)):
+def read_product_by_name(
+    producto_nombre: str,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
     db_product = producto_crud.get_product_by_name(db, producto_nombre=producto_nombre)
 
     if not db_product:
@@ -35,7 +43,11 @@ def read_product_by_name(producto_nombre: str, db: Session = Depends(get_db)):
 
 
 @router.get("/categoria/{categoria_id}", response_model=List[producto_schema.Producto])
-def get_product_by_categorie(categoria_id: int, db: Session = Depends(get_db)):
+def get_product_by_categorie(
+    categoria_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
     db_product = producto_crud.get_products_by_categorie(db, categorie_id=categoria_id)
 
     if not db_product:
@@ -48,7 +60,9 @@ def get_product_by_categorie(categoria_id: int, db: Session = Depends(get_db)):
     "/", status_code=status.HTTP_201_CREATED, response_model=producto_schema.Producto
 )
 def create_product(
-    producto: producto_schema.ProductoCreate, db: Session = Depends(get_db)
+    producto: producto_schema.ProductoCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
 ):
     # lo que hace esto es mandarle los datos a la funcion del crud para que los inserte en la db
     return producto_crud.create_product(db, producto=producto)
@@ -59,6 +73,7 @@ def update_product(
     producto_id: int,
     producto: producto_schema.ProductoUpdate,
     db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
 ):
     product_to_update = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
@@ -71,7 +86,11 @@ def update_product(
 
 
 @router.delete("/{producto_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_product(producto_id: int, db: Session = Depends(get_db)):
+def delete_product(
+    producto_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
     product_to_delete = producto_crud.get_product_by_id(db, producto_id=producto_id)
 
     if not product_to_delete or product_to_delete.deleted_at is not None:

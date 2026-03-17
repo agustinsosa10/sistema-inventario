@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.schemas import categoria as categoria_schema
-from app.api.dependencies import get_db
+from app.api.dependencies import get_db, verificar_token
 from typing import List
 from app.crud import categoria as categoria_crud
 
@@ -9,12 +9,18 @@ router = APIRouter()
 
 
 @router.get("/", response_model=List[categoria_schema.Categoria])
-def read_categories(db: Session = Depends(get_db)):
+def read_categories(
+    db: Session = Depends(get_db), current_user=Depends(verificar_token)
+):
     return categoria_crud.get_categories(db)
 
 
 @router.get("/{categoria_id}", response_model=categoria_schema.Categoria)
-def read_category_by_id(categoria_id: int, db: Session = Depends(get_db)):
+def read_category_by_id(
+    categoria_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
     db_categoria_by_id = categoria_crud.get_category_by_id(
         db, categoria_id=categoria_id
     )
@@ -26,7 +32,11 @@ def read_category_by_id(categoria_id: int, db: Session = Depends(get_db)):
 
 
 @router.get("/nombre/{categoria_name}", response_model=List[categoria_schema.Categoria])
-def read_category_by_name(categoria_name: str, db: Session = Depends(get_db)):
+def read_category_by_name(
+    categoria_name: str,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
     db_categorie_by_name = categoria_crud.get_categoria_by_name(
         db, categoria_name=categoria_name
     )
@@ -41,7 +51,9 @@ def read_category_by_name(categoria_name: str, db: Session = Depends(get_db)):
     "/", status_code=status.HTTP_201_CREATED, response_model=categoria_schema.Categoria
 )
 def create_category(
-    categoria: categoria_schema.CategoriaCreate, db: Session = Depends(get_db)
+    categoria: categoria_schema.CategoriaCreate,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
 ):
     return categoria_crud.create_category(db, categoria=categoria)
 
@@ -51,6 +63,7 @@ def update_category(
     categoria_id: int,
     new_data_categoria: categoria_schema.CategoriaCreate,
     db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
 ):
     category_to_update = categoria_crud.get_category_by_id(
         db, categoria_id=categoria_id
@@ -67,7 +80,11 @@ def update_category(
 
 
 @router.delete("/{categoria_id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_category(categoria_id: int, db: Session = Depends(get_db)):
+def delete_category(
+    categoria_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
 
     category_to_delete = categoria_crud.get_category_by_id(
         db, categoria_id=categoria_id

@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from enum import Enum
 from datetime import datetime
 from typing import Optional
@@ -20,6 +20,7 @@ class OperadorBase(BaseModel):
 # los datos que queremos que nos retorne la api + los de operadorbase, no devolvemos la contrasñea por que no esta en el modelo base
 class Operador(OperadorBase):
     id: int
+    email: str
     # created_at: datetime
     # updated_at: Optional[datetime] = None
     # deleted_at: Optional[datetime] = None
@@ -33,6 +34,26 @@ class OperadorCreate(OperadorBase):
     password: str
     rol: RolOperador
     email: str
+
+    @field_validator("password")
+    @classmethod
+    def password_min_length(cls, v):
+        if len(v) < 8:
+            raise ValueError("La contraseña debe tener al menos 8 caracteres")
+        return v
+
+
+class OperadorLogin(BaseModel):
+    email: str
+    password: str
+
+
+class OperadorAuth(OperadorBase):
+    rol: RolOperador
+    token: str
+
+    class Config:
+        from_attributes: True
 
 
 class OperadorUpdate(BaseModel):
