@@ -57,7 +57,7 @@ def update_proveedor(
     return proveedor_to_update
 
 
-def delete_product(db: Session, proveedor_to_delete: Proveedores):
+def delete_proveedor(db: Session, proveedor_to_delete: Proveedores):
     proveedor_to_delete.deleted_at = datetime.now(timezone.utc)
     db.commit()
     db.refresh(proveedor_to_delete)

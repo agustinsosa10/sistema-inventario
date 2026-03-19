@@ -24,7 +24,11 @@ def get_operador_by_name(db: Session, operador_name: str):
 
 
 def get_operador_by_email(db: Session, operador_email: str):
-    return db.query(Operador).filter(Operador.email == operador_email).first()
+    return (
+        db.query(Operador)
+        .filter(Operador.email == operador_email, Operador.deleted_at == None)
+        .first()
+    )
 
 
 def create_operador(db: Session, operador: OperadorCreate):
@@ -54,7 +58,7 @@ def update_operador(
     if operador.email is not None:
         operador_to_update.email = operador.email
     if operador.password is not None:
-        operador_to_update.password = operador.password
+        operador_to_update.password = security.get_password_hash(operador.password)
 
     operador_to_update.updated_at = datetime.now(timezone.utc)
 

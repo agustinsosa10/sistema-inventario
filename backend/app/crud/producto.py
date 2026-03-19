@@ -70,6 +70,7 @@ def update_product(
     db: Session,
     product_to_update: Productos,
     producto: ProductoUpdate,
+    operador_id: int,
 ):
 
     if producto.nombre is not None:
@@ -89,7 +90,7 @@ def update_product(
             cantidad=producto.cantidad,
             tipo=TipoEnum.restock,
             producto_id=product_to_update.id,
-            operador_id=1,
+            operador_id=operador_id,
         )
 
     product_to_update.updated_at = datetime.now(timezone.utc)

@@ -9,10 +9,6 @@ from app.schemas.venta_detalle import (
 from app.schemas import operador
 
 
-class VentaBase(BaseModel):
-    operador_id: int
-
-
 # datos que nos retorna
 class Venta(BaseModel):
     id: int
@@ -54,5 +50,5 @@ class VentaByProductoName(BaseModel):
 
 
 # datos que enviamos
-class VentaCreate(VentaBase):
+class VentaCreate(BaseModel):
     detalles: List[VentaDetalleCreate]

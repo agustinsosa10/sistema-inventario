@@ -18,7 +18,7 @@ class Categoria(CategoriaBase):
 
     # transforma el objeto a json
     class Config:
-        from_attributes: True
+        from_attributes = True
 
 
 # datos que enviamos a la api, en este caso los de categoriabase

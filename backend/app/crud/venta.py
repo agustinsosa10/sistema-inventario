@@ -9,6 +9,7 @@ from app.models.movimientos import TipoEnum
 from app.crud import movimiento as movimiento_crud
 from typing import Optional
 from app.models.operador import Operador
+from fastapi import HTTPException
 
 
 def get_ventas(db: Session):
@@ -54,15 +55,30 @@ def get_venta_by_product_name(db: Session, producto_nombre: str):
     )
 
 
-def create_venta(db: Session, new_venta: VentaCreate):
+def create_venta(db: Session, new_venta: VentaCreate, operador_id: int):
 
     db_ventadetalle = []
     total = 0
 
     for detalles in new_venta.detalles:
         producto = (
-            db.query(Productos).filter(Productos.id == detalles.producto_id).first()
+            db.query(Productos)
+            .filter(Productos.id == detalles.producto_id, Productos.deleted_at == None)
+            .first()
         )
+
+        if not producto:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Producto con id {detalles.producto_id} no encontrado",
+            )
+
+        if producto.stock < detalles.cantidad:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Stock insuficiente para '{producto.nombre}': "
+                f"disponible {producto.stock}, solicitado {detalles.cantidad}",
+            )
 
         producto.stock -= detalles.cantidad
 
@@ -71,7 +87,7 @@ def create_venta(db: Session, new_venta: VentaCreate):
             cantidad=detalles.cantidad,
             tipo=TipoEnum.venta,
             producto_id=detalles.producto_id,
-            operador_id=new_venta.operador_id,
+            operador_id=operador_id,
         )
 
         subtotal = detalles.cantidad * producto.precio
@@ -86,7 +102,7 @@ def create_venta(db: Session, new_venta: VentaCreate):
         )
 
     db_new_venta = Ventas(
-        operador_id=new_venta.operador_id, total=total, detalles=db_ventadetalle
+        operador_id=operador_id, total=total, detalles=db_ventadetalle
     )
 
     db.add(db_new_venta)

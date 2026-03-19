@@ -88,6 +88,6 @@ def delete_proveedor(
     if not proveedor_to_delete or proveedor_to_delete.deleted_at is not None:
         raise HTTPException(status_code=404, detail="Proveedor Not Found")
     else:
-        return proveedor_crud.delete_product(
+        return proveedor_crud.delete_proveedor(
             db, proveedor_to_delete=proveedor_to_delete
         )

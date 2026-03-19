@@ -15,22 +15,6 @@ def read_categories(
     return categoria_crud.get_categories(db)
 
 
-@router.get("/{categoria_id}", response_model=categoria_schema.Categoria)
-def read_category_by_id(
-    categoria_id: int,
-    db: Session = Depends(get_db),
-    current_user=Depends(verificar_token),
-):
-    db_categoria_by_id = categoria_crud.get_category_by_id(
-        db, categoria_id=categoria_id
-    )
-
-    if not db_categoria_by_id or db_categoria_by_id is not None:
-        raise HTTPException(status_code=404, detail="Categoria Not Found")
-    else:
-        return db_categoria_by_id
-
-
 @router.get("/nombre/{categoria_name}", response_model=List[categoria_schema.Categoria])
 def read_category_by_name(
     categoria_name: str,
@@ -45,6 +29,22 @@ def read_category_by_name(
         raise HTTPException(status_code=404, detail="Categoria Not Found")
     else:
         return db_categorie_by_name
+
+
+@router.get("/{categoria_id}", response_model=categoria_schema.Categoria)
+def read_category_by_id(
+    categoria_id: int,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
+):
+    db_categoria_by_id = categoria_crud.get_category_by_id(
+        db, categoria_id=categoria_id
+    )
+
+    if not db_categoria_by_id or db_categoria_by_id.deleted_at is not None:
+        raise HTTPException(status_code=404, detail="Categoria Not Found")
+    else:
+        return db_categoria_by_id
 
 
 @router.post(

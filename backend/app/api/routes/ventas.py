@@ -13,16 +13,23 @@ def get_ventas(db: Session = Depends(get_db), current_user=Depends(verificar_tok
     return venta_crud.get_ventas(db)
 
 
-@router.get("/{venta_id}", response_model=venta_schema.VentaConDetalles)
-def get_venta_by_id(
-    venta_id: int, db: Session = Depends(get_db), current_user=Depends(verificar_token)
+@router.get(
+    "/operador/name/{operador_nombre}",
+    response_model=List[venta_schema.VentaByOperadorName],
+)
+def get_venta_by_operador_name(
+    operador_nombre: str,
+    db: Session = Depends(get_db),
+    current_user=Depends(verificar_token),
 ):
-    venta = venta_crud.get_venta_by_id(db, venta_id=venta_id)
+    operador = venta_crud.get_venta_by_operador_name(
+        db, operador_nombre=operador_nombre
+    )
 
-    if not venta:
-        raise HTTPException(status_code=404, detail="Venta not found")
+    if not operador:
+        raise HTTPException(status_code=404, detail="Ventas of this operador not found")
     else:
-        return venta
+        return operador
 
 
 @router.get(
@@ -41,23 +48,16 @@ def get_venta_by_operador_id(
         return operador
 
 
-@router.get(
-    "/operador/name/{operador_nombre}",
-    response_model=List[venta_schema.VentaByOperadorName],
-)
-def get_venta_by_operador_name(
-    operador_nombre: str,
-    db: Session = Depends(get_db),
-    current_user=Depends(verificar_token),
+@router.get("/{venta_id}", response_model=venta_schema.VentaConDetalles)
+def get_venta_by_id(
+    venta_id: int, db: Session = Depends(get_db), current_user=Depends(verificar_token)
 ):
-    operador = venta_crud.get_venta_by_operador_name(
-        db, operador_nombre=operador_nombre
-    )
+    venta = venta_crud.get_venta_by_id(db, venta_id=venta_id)
 
-    if not operador:
-        raise HTTPException(status_code=404, detail="Ventas of this operador not found")
+    if not venta:
+        raise HTTPException(status_code=404, detail="Venta not found")
     else:
-        return operador
+        return venta
 
 
 @router.get(
@@ -88,4 +88,4 @@ def create_venta(
     db: Session = Depends(get_db),
     current_user=Depends(verificar_token),
 ):
-    return venta_crud.create_venta(db, new_venta=new_venta)
+    return venta_crud.create_venta(db, new_venta=new_venta, operador_id=current_user.id)

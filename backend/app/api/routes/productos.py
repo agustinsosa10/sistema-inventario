@@ -81,7 +81,7 @@ def update_product(
         raise HTTPException(status_code=404, detail="Producto not found")
     else:
         return producto_crud.update_product(
-            db, product_to_update=product_to_update, producto=producto
+            db, product_to_update=product_to_update, producto=producto, operador_id=current_user.id
         )
 
 

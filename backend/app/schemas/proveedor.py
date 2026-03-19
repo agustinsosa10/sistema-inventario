@@ -20,7 +20,7 @@ class Proveedor(ProveedorBase):
     # deleted_at: Optional[datetime] = None
 
     class Config:
-        from_atributtes: True
+        from_attributes = True
 
 
 # los datos que mandamos, en este caso heredamos los datos de proveedorbase

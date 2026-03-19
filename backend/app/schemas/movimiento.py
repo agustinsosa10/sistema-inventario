@@ -31,6 +31,5 @@ class Movimiento(MovimientoBase):
 
 # los datos que enviamos a la api, en este caso los de movimientobase
 class MovimientoCreate(MovimientoBase):
-    pass
     producto_id: int
     operador_id: int

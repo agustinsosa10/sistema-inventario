@@ -46,6 +46,5 @@ def create_movimiento(
     )
 
     db.add(new_movimiento)
-    db.commit()
-    db.refresh(new_movimiento)
+    db.flush()
     return new_movimiento

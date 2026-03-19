@@ -7,6 +7,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt, JWTError
 from app.core.config import settings
 from app.models.operador import Operador
+from sqlalchemy.orm import Session
 
 
 def get_db() -> Generator:
@@ -38,8 +39,12 @@ def verificar_token(token: str = Depends(oauth2_scheme), db: Session = Depends(g
     except JWTError:
         raise HTTPException(status_code=401, detail="Token inválido")
 
-    # verificamos que el usuario exista por si fue eliminado despues de que se genero el token
-    db_operador = db.query(Operador).filter(Operador.email == email).first()
+    # verificamos que el usuario exista y no haya sido eliminado despues de que se genero el token
+    db_operador = (
+        db.query(Operador)
+        .filter(Operador.email == email, Operador.deleted_at == None)
+        .first()
+    )
     if db_operador is None:
         raise HTTPException(status_code=401, detail="Token inválido")
 

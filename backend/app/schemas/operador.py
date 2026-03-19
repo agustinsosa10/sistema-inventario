@@ -26,7 +26,7 @@ class Operador(OperadorBase):
     # deleted_at: Optional[datetime] = None
 
     class Config:
-        from_attributes: True
+        from_attributes = True
 
 
 # los datos que vamos a enviar a la api, en este caso los de operadorbase y la contraseña
@@ -53,7 +53,7 @@ class OperadorAuth(OperadorBase):
     token: str
 
     class Config:
-        from_attributes: True
+        from_attributes = True
 
 
 class OperadorUpdate(BaseModel):

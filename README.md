@@ -219,4 +219,13 @@ PROJECT_VERSION=0.0.1
 
 ---
 
+## 📋 Tareas Pendientes
+
+- [ ] Modificar `routes/ventas` para validar usuario autenticado con JWT
+- [ ] Modificar `crud/venta` para incluir el usuario autenticado en las operaciones
+- [ ] Integrar `get_current_user()` en los endpoints de ventas
+- [ ] Registrar el operador/usuario en cada venta creada
+
+---
+
 **Última actualización:** 16 de marzo de 2026
